@@ -7,7 +7,7 @@ open Xunit
 open FsCheck
 open FsCheck.Xunit
 open Swensen.Unquote
-open FSharp.Control.Tasks.V2.ContextInsensitive
+open FSharp.Control.Tasks.NonAffine
 
 open NBomber.Contracts
 open NBomber.FSharp
@@ -30,7 +30,8 @@ let ``should distribute connection with one to one mapping if connectionPool.Cou
         if context.CorrelationId.CopyNumber <> context.Connection then
             return Response.Fail "distribution is not following one to one mapping"
 
-        else return Response.Ok()
+        else
+            return Response.Ok()
     })
 
     let scenario =
@@ -96,7 +97,7 @@ let ``should distribute connection using modulo if connectionPool.Count < loadSi
     | Error error -> failwith error
 
 [<Fact>]
-let ``should be shared btw steps as singlton instance``() =
+let ``should be shared btw steps as singleton instance``() =
 
     let poolCount = 100
 

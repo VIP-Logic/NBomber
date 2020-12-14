@@ -7,7 +7,7 @@ open System.Threading.Tasks
 
 open Serilog
 open CommandLine
-open FSharp.Control.Tasks.V2.ContextInsensitive
+open FSharp.Control.Tasks.NonAffine
 open FsToolkit.ErrorHandling
 open Microsoft.Extensions.Configuration
 

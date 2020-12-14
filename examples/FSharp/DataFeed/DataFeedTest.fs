@@ -2,7 +2,7 @@ module FSharp.DataFeed.DataFeedTest
 
 open System.Threading.Tasks
 
-open FSharp.Control.Tasks.V2.ContextInsensitive
+open FSharp.Control.Tasks.NonAffine
 
 open NBomber
 open NBomber.Contracts

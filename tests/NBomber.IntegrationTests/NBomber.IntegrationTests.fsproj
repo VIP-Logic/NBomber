@@ -57,6 +57,6 @@
         <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Update="FSharp.Core" Version="4.6.2" />
+        <PackageReference Update="FSharp.Core" Version="4.7.2" />
     </ItemGroup>
 </Project>

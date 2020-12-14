@@ -7,7 +7,7 @@ open System.Diagnostics
 open System.Runtime.InteropServices
 
 open Nessos.Streams
-open FSharp.Control.Tasks.V2.ContextInsensitive
+open FSharp.Control.Tasks.NonAffine
 open FsToolkit.ErrorHandling
 
 open NBomber.Contracts

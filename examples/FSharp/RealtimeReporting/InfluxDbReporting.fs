@@ -1,7 +1,7 @@
 module FSharp.RealtimeReporting.InfluxDbReporting
 
 open System.Threading.Tasks
-open FSharp.Control.Tasks.V2.ContextInsensitive
+open FSharp.Control.Tasks.NonAffine
 
 open NBomber.Contracts
 open NBomber.FSharp
