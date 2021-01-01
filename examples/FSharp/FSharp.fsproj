@@ -6,6 +6,7 @@
         <GenerateProgramFile>false</GenerateProgramFile>
         <ServerGarbageCollection>true</ServerGarbageCollection>
         <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
+        <RollForward>Major</RollForward>
     </PropertyGroup>
 
     <ItemGroup>
