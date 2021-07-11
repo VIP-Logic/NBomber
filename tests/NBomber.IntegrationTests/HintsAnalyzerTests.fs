@@ -63,7 +63,11 @@ let ``analyzeNodeStats should return hint for case when DataTransfer.MinBytes = 
 
     let req = { baseStepStats.Ok.Request with RPS = 1.0 }
     let dt = { baseStepStats.Ok.DataTransfer with MinBytes = int minBytes }
-    let stepStats = { baseStepStats with Ok = { Request = req; Latency = baseStepStats.Ok.Latency; DataTransfer = dt; StatusCodes = Array.empty } }
+    let sc = { StatusCode = 200
+               IsError = false
+               Message = "Success"
+               Count = 1 }
+    let stepStats = { baseStepStats with Ok = { Request = req; Latency = baseStepStats.Ok.Latency; DataTransfer = dt; StatusCodes = [| sc |] } }
     let scnStats = { baseScnStats with StepStats = [| stepStats |] }
     let nodeStats = { baseNodeStats with ScenarioStats = [| scnStats |] }
 
@@ -127,3 +131,15 @@ let ``disableHintsAnalyzer should disable hints`` () =
     |> Result.getOk
     |> fun result ->
         test <@ result.Hints.Length = 0 @>
+
+[<Fact>]
+let ``analyzeNodeStats should return hints for case when StatusCodes are not provided`` () =
+    let req = { baseStepStats.Ok.Request with RPS = 1.0 }
+    let dt = { baseStepStats.Ok.DataTransfer with MinBytes = 100 }
+    let stepStats = { baseStepStats with Ok = { StatusCodes = Array.empty; Request = req; Latency = baseStepStats.Ok.Latency; DataTransfer = dt} }
+    let scnStats = { baseScnStats with StepStats = [| stepStats |] }
+    let nodeStats = { baseNodeStats with ScenarioStats = [| scnStats |] }
+
+    let hints = HintsAnalyzer.analyzeNodeStats nodeStats
+
+    test<@ hints.Length > 0 @>
