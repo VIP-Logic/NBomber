@@ -25,8 +25,10 @@ let private analyzeStatusCodes (scnStats: ScenarioStats) =
         " In order to track status code, you should use Response.Ok(statusCode: value)"
 
     scnStats.StepStats
-    |> Seq.filter(fun step -> (step.Ok.Request.Count > 0 && Array.isEmpty step.Ok.StatusCodes) ||
-                              (step.Fail.Request.Count > 0 && Array.isEmpty step.Fail.StatusCodes))
+    |> Seq.filter(fun step -> 
+        (step.Ok.Request.Count > 0 && Array.isEmpty step.Ok.StatusCodes) ||
+        (step.Fail.Request.Count > 0 && Array.isEmpty step.Fail.StatusCodes)
+    )
     |> Seq.map(fun step -> {
         SourceName = scnStats.ScenarioName
         SourceType = HintSourceType.Scenario
@@ -52,7 +54,11 @@ let private checkDuplicateStepName (scenario: Scenario) =
 
 let analyzeNodeStats (stats: NodeStats) =
     stats.ScenarioStats
-    |> Seq.collect(fun scnStats -> analyzeDataTransfer(scnStats) |> Seq.append(analyzeStatusCodes(scnStats)))
+    |> Seq.collect(fun scnStats -> 
+        scnStats
+        |> analyzeDataTransfer 
+        |> Seq.append(analyzeStatusCodes scnStats)
+    )
     |> Seq.toList
 
 let analyzeScenarios (scenarios: Scenario list) =
