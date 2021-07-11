@@ -18,6 +18,22 @@ let private analyzeDataTransfer (scnStats: ScenarioStats) =
         Hint = printHint(scnStats.ScenarioName, step.StepName)
     })
 
+let private analyzeStatusCodes (scnStats: ScenarioStats) =
+
+    let printHint (scnName, stepName) =
+        $"Step '{stepName}' in scenario '{scnName}' didn't track status code." +
+        " In order to track status code, you should use Response.Ok(statusCode: value)"
+
+    scnStats.StepStats
+    |> Seq.filter(fun step -> (step.Ok.Request.Count > 0 && Array.isEmpty step.Ok.StatusCodes) ||
+                              (step.Fail.Request.Count > 0 && Array.isEmpty step.Fail.StatusCodes))
+    |> Seq.map(fun step -> {
+        SourceName = scnStats.ScenarioName
+        SourceType = HintSourceType.Scenario
+        Hint = printHint(scnStats.ScenarioName, step.StepName)
+    })
+
+
 let private checkDuplicateStepName (scenario: Scenario) =
 
     let printHint (scnName, stepName) =
@@ -36,7 +52,7 @@ let private checkDuplicateStepName (scenario: Scenario) =
 
 let analyzeNodeStats (stats: NodeStats) =
     stats.ScenarioStats
-    |> Seq.collect(analyzeDataTransfer)
+    |> Seq.collect(fun scnStats -> analyzeDataTransfer(scnStats) |> Seq.append(analyzeStatusCodes(scnStats)))
     |> Seq.toList
 
 let analyzeScenarios (scenarios: Scenario list) =
